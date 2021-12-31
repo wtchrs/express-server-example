@@ -1,32 +1,51 @@
-/**
- * Some predefined delay values (in milliseconds).
- */
-export enum Delays {
-  Short = 500,
-  Medium = 2000,
-  Long = 5000,
-}
+import express from 'express'
+import type { Request, Response, NextFunction } from 'express'
 
-/**
- * Returns a Promise<string> that resolves after a given time.
- *
- * @param {string} name - A name.
- * @param {number=} [delay=Delays.Medium] - A number of milliseconds to delay resolution of the Promise.
- * @returns {Promise<string | undefined>}
- */
-function delayedHello(
-  name: string,
-  delay: number = Delays.Medium,
-): Promise<string | undefined> {
-  return new Promise((resolve: (value?: string) => void) =>
-    setTimeout(() => resolve(`Hello, ${name}`), delay),
-  )
-}
+import { create } from 'express-handlebars'
 
-// Below are examples of using ESLint errors suppression
-// Here it is suppressing a missing return type definition for the greeter function.
+const port: string | 3000 = process.env.PORT || 3000
+const cdir = './'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function greeter(name: string) {
-  return delayedHello(name, Delays.Long)
-}
+const fortunes = [
+  'Conquer your fears of they will conquer you.',
+  'Rivers need springs.',
+  "Do not fear what you don't know.",
+  'You will have a pleasant surprise.',
+  'Whenever possible, keep it simple.',
+]
+
+const app = express()
+
+const hbs = create({
+  extname: '.hbs',
+  defaultLayout: 'main',
+})
+app.engine('.hbs', hbs.engine)
+app.set('view engine', '.hbs')
+
+app.use(express.static(cdir + '/public'))
+
+app.get('/', (_req: Request, res: Response) => res.render('home'))
+
+app.get('/about', (_req: Request, res: Response) => {
+  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)]
+  res.render('about', { fortune: randomFortune })
+})
+
+app.use((_req: Request, res: Response) => {
+  res.status(404)
+  res.render('404')
+})
+
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err.message)
+  res.status(500)
+  res.render('500')
+})
+
+app.listen(port, () =>
+  console.log(
+    `Express started on http://localhost:${port}; ` +
+      `press Ctrl + C to terminate.`,
+  ),
+)
