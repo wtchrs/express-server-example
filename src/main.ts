@@ -1,18 +1,11 @@
 import express from 'express'
 import type { Request, Response, NextFunction } from 'express'
-
 import { create } from 'express-handlebars'
 
-const port: string | 3000 = process.env.PORT || 3000
-const cdir = './'
+import { getFortune } from './lib/fortune'
 
-const fortunes = [
-  'Conquer your fears of they will conquer you.',
-  'Rivers need springs.',
-  "Do not fear what you don't know.",
-  'You will have a pleasant surprise.',
-  'Whenever possible, keep it simple.',
-]
+const port: string | 3000 = process.env.PORT || 3000
+const root_dir = './'
 
 const app = express()
 
@@ -23,13 +16,12 @@ const hbs = create({
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 
-app.use(express.static(cdir + '/public'))
+app.use(express.static(root_dir + '/public'))
 
 app.get('/', (_req: Request, res: Response) => res.render('home'))
 
 app.get('/about', (_req: Request, res: Response) => {
-  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)]
-  res.render('about', { fortune: randomFortune })
+  res.render('about', { fortune: getFortune() })
 })
 
 app.use((_req: Request, res: Response) => {
