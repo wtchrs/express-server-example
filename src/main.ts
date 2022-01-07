@@ -1,8 +1,7 @@
 import express from 'express'
-import type { Request, Response, NextFunction } from 'express'
 import { create } from 'express-handlebars'
 
-import { getFortune } from './lib/fortune'
+import * as handlers from './lib/handlers'
 
 const port: string | 3000 = process.env.PORT || 3000
 const root_dir = './'
@@ -18,22 +17,12 @@ app.set('view engine', '.hbs')
 
 app.use(express.static(root_dir + '/public'))
 
-app.get('/', (_req: Request, res: Response) => res.render('home'))
+app.get('/', handlers.home)
+app.get('/about', handlers.about)
 
-app.get('/about', (_req: Request, res: Response) => {
-  res.render('about', { fortune: getFortune() })
-})
-
-app.use((_req: Request, res: Response) => {
-  res.status(404)
-  res.render('404')
-})
-
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.message)
-  res.status(500)
-  res.render('500')
-})
+// custom 404, 500 handling pages
+app.use(handlers.notFound)
+app.use(handlers.serverError)
 
 app.listen(port, () =>
   console.log(

@@ -33,6 +33,7 @@
     "eslint-plugin-jest": "^25.3.2",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.5",
+    "jest-mock-extended": "^2.0.4",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.2",
