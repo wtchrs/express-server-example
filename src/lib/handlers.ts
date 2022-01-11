@@ -2,26 +2,44 @@ import type { Request, Response, NextFunction } from 'express'
 
 import { getFortune } from './fortune'
 
-export function home(_req: Request, res: Response) {
-  res.render('home')
+/**
+ * Helper class for rendering handlers.
+ */
+export default class Handlers {
+  static home(_req: Request, res: Response) {
+    res.render('home')
+  }
+
+  static about(_req: Request, res: Response) {
+    res.render('about', { fortune: getFortune() })
+  }
+
+  static notFound(_req: Request, res: Response) {
+    res.status(404).render('404')
+  }
+
+  static serverError(
+    err: Error,
+    _req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) {
+    console.error(err)
+    res.status(500).render('500')
+  }
 }
 
-export function about(_req: Request, res: Response) {
-  res.render('about', { fortune: getFortune() })
-}
+/**
+ * Helper class for API handlers.
+ */
+export class ApiHandlers {
+  static showHeaders(req: Request, res: Response) {
+    res.type('text/plain')
 
-export function notFound(_req: Request, res: Response) {
-  res.status(404)
-  res.render('404')
-}
+    const headers = Object.entries(req.headers).map(
+      ([key, value]) => `${key}: ${value}`,
+    )
 
-export function serverError(
-  err: Error,
-  _req: Request,
-  res: Response,
-  _next: NextFunction,
-) {
-  console.error(err)
-  res.status(500)
-  res.render('500')
+    res.send(headers.join('\n'))
+  }
 }

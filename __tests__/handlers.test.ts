@@ -1,9 +1,9 @@
 import { mock } from 'jest-mock-extended'
 import type { Request, Response } from 'express'
 
-import * as handlers from '../src/lib/handlers'
+import { default as handlers, ApiHandlers as api } from '../src/lib/handlers'
 
-describe('Server test', () => {
+describe('Rendering handlers tests', () => {
   test('home page renders', () => {
     const req = mock<Request>()
     const res = mock<Response>()
@@ -48,5 +48,28 @@ describe('Server test', () => {
     expect(res.render.mock.calls.length).toBe(1)
     expect(res.render.mock.calls[0][0]).toBe('500')
     expect(next.mock.calls.length).toBe(0)
+  })
+})
+
+describe('API handlers tests', () => {
+  test('/api/headers handler test', () => {
+    const req = mock<Request>()
+    const res = mock<Response>()
+
+    // dummy headers
+    req.headers = {
+      host: '127.0.0.1:3000',
+      connection: 'keep-alive',
+      etc: '...',
+    }
+
+    api.showHeaders(req, res)
+
+    expect(res.type.mock.calls.length).toBe(1)
+    expect(res.type.mock.calls[0][0]).toBe('text/plain')
+    expect(res.send.mock.calls.length).toBe(1)
+    expect(res.send.mock.calls[0][0]).toMatch(
+      /^([^\n]+: [^\n]+\n)+([^\n]+: [^\n]+)$/,
+    )
   })
 })
