@@ -14,8 +14,13 @@ export default class Handlers {
     res.render('about', { fortune: getFortune() })
   }
 
+  static sectionTest(_req: Request, res: Response) {
+    res.render('section-test')
+  }
+
   static notFound(_req: Request, res: Response) {
-    res.status(404).render('404')
+    res.status(404)
+    res.render('404')
   }
 
   static serverError(
@@ -25,7 +30,8 @@ export default class Handlers {
     _next: NextFunction,
   ) {
     console.error(err)
-    res.status(500).render('500')
+    res.status(500)
+    res.render('500')
   }
 }
 

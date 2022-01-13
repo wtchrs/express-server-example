@@ -10,8 +10,8 @@ describe('Rendering handlers tests', () => {
 
     handlers.home(req, res)
 
-    expect(res.render.mock.calls.length).toBe(1)
-    expect(res.render.mock.calls[0][0]).toBe('home')
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith('home')
   })
 
   test('about page renders with fortune', () => {
@@ -20,11 +20,21 @@ describe('Rendering handlers tests', () => {
 
     handlers.about(req, res)
 
-    expect(res.render.mock.calls.length).toBe(1)
-    expect(res.render.mock.calls[0][0]).toBe('about')
-    expect(res.render.mock.calls[0][1]).toEqual(
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith(
+      'about',
       expect.objectContaining({ fortune: expect.stringMatching(/\W/) }),
     )
+  })
+
+  test('section-test handler renders', () => {
+    const req = mock<Request>()
+    const res = mock<Response>()
+
+    handlers.sectionTest(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith('section-test')
   })
 
   test('404 handler renders', () => {
@@ -33,8 +43,8 @@ describe('Rendering handlers tests', () => {
 
     handlers.notFound(req, res)
 
-    expect(res.render.mock.calls.length).toBe(1)
-    expect(res.render.mock.calls[0][0]).toBe('404')
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith('404')
   })
 
   test('500 handler renders', () => {
@@ -45,9 +55,9 @@ describe('Rendering handlers tests', () => {
 
     handlers.serverError(err, req, res, next)
 
-    expect(res.render.mock.calls.length).toBe(1)
-    expect(res.render.mock.calls[0][0]).toBe('500')
-    expect(next.mock.calls.length).toBe(0)
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith('500')
+    expect(next).not.toHaveBeenCalled()
   })
 })
 
@@ -65,11 +75,11 @@ describe('API handlers tests', () => {
 
     api.showHeaders(req, res)
 
-    expect(res.type.mock.calls.length).toBe(1)
-    expect(res.type.mock.calls[0][0]).toBe('text/plain')
-    expect(res.send.mock.calls.length).toBe(1)
-    expect(res.send.mock.calls[0][0]).toMatch(
-      /^([^\n]+: [^\n]+\n)+([^\n]+: [^\n]+)$/,
+    expect(res.type).toHaveBeenCalledTimes(1)
+    expect(res.type).toHaveBeenCalledWith('text/plain')
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send).toHaveBeenCalledWith(
+      expect.stringMatching(/^([^\n]+: [^\n]+\n)+([^\n]+: [^\n]+)$/),
     )
   })
 })
