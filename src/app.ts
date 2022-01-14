@@ -4,7 +4,7 @@ import { create } from 'express-handlebars'
 import { default as handlers, ApiHandlers as api } from './lib/handlers'
 import weatherMiddleware from './lib/middleware/weather'
 
-export const port: string | 3000 = process.env.PORT || 3000
+export const port: number = Number(process.env.PORT) || 3000
 export const root_dir = './'
 
 const app = express()
@@ -13,7 +13,7 @@ app.disable('x-powered-by')
 
 const hbs = create({
   extname: '.hbs',
-  defaultLayout: 'main',
+  defaultLayout: 'stellar',
   helpers: {
     section(name: string, options: { fn: (arg: unknown) => string }) {
       if (!this.sections) this.sections = {}
