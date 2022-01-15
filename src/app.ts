@@ -29,7 +29,8 @@ const hbs = create({
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(express.static(root_dir + '/public'))
 app.use(weatherMiddleware)
 
@@ -38,8 +39,15 @@ app.get('/about', handlers.about)
 
 app.get('/section-test', handlers.sectionTest)
 
+app.get('/newsletter-signup', handlers.newsletterSignup)
+app.post('/newsletter-signup/process', handlers.newsletterSignupProcess)
+app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
+
+app.get('/newsletter', handlers.newsletter)
+
 // API
 app.get('/api/headers', api.showHeaders)
+app.post('/api/newsletter-signup', api.newsletterSignup)
 
 // custom 404, 500 handling pages
 app.use(handlers.notFound)

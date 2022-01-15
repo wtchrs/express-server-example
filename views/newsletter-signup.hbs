@@ -1,0 +1,20 @@
+{{#section 'title'}}Sign up for our newsletter to receive news and specials!{{/section}}
+
+<form action="/newsletter-signup/process?form=newsletter" role="form" method="POST">
+  <div class="row gtr-uniform">
+  <input type="hidden" name="csrf" value="{{csrf}}">
+  <div class="form-group col-6 col-12-xsmall">
+    <!-- <label for="fieldName" class="col-sm-2">Name</label> -->
+    <input type="text" class="form-control"
+      id="fieldName" name="name" placeholder="Name">
+  </div>
+  <div class="form-group col-6 col-12-xsmall">
+    <!-- <label for="fieldEmail" class="col-sm-2">Email</label> -->
+    <input type="email" class="form-control"
+      id="fieldEmail" name="email" placeholder="Email" required>
+  </div>
+  <div>
+    <button type="submit">Register</button>
+  </div>
+  </div>
+</form>

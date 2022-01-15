@@ -18,6 +18,26 @@ export default class Handlers {
     res.render('section-test')
   }
 
+  static newsletterSignup(_req: Request, res: Response) {
+    res.render('newsletter-signup', { csrf: 'CSRF token goes here' })
+  }
+
+  static newsletterSignupProcess(req: Request, res: Response) {
+    console.log('Form (fromquerystring): ' + req.query.form)
+    console.log('CSRF token (from hidden form field): ' + req.body.csrf)
+    console.log('Name (from visible form field): ' + req.body.name)
+    console.log('Email (from visible form field): ' + req.body.email)
+    res.redirect(303, '/newsletter-signup/thank-you')
+  }
+
+  static newsletterSignupThankYou(_req: Request, res: Response) {
+    res.render('newsletter-signup-thank-you')
+  }
+
+  static newsletter(_req: Request, res: Response) {
+    res.render('newsletter', { csrf: 'CSRF token goes here' })
+  }
+
   static notFound(_req: Request, res: Response) {
     res.status(404)
     res.render('404')
@@ -47,5 +67,12 @@ export class ApiHandlers {
     )
 
     res.send(headers.join('\n'))
+  }
+
+  static newsletterSignup(req: Request, res: Response) {
+    console.log('CSRF token (from hidden form field): ' + req.body.csrf)
+    console.log('Name (from visible form field): ' + req.body.name)
+    console.log('Email (from visible form field): ' + req.body.email)
+    res.send({ result: 'success' })
   }
 }
