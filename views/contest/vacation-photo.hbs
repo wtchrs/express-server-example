@@ -1,0 +1,35 @@
+{{#section 'title'}}
+  Vacation Photo Contest
+{{/section}}
+
+<form
+  role='form'
+  enctype='multipart/form-data'
+  method='POST'
+  action='/contest/vacation-photo/{{year}}/{{month}}'
+>
+  <div class='row gtr-uniform'>
+    <input type='hidden' name='csrf' value='{{csrf}}' />
+    <div class='form-group col-6 col-12-xsmall'>
+      <input type='text' id='fieldName' name='name' placeholder='Name' />
+    </div>
+    <div class='form-group col-6 col-12-xsmall'>
+      <input
+        type='email'
+        id='fieldEmail'
+        name='email'
+        placeholder='Email'
+        required
+      />
+    </div>
+    <div class='form-group col-1 col-1-xsmall'>
+      <input type='file' accept='image/*' id='fieldPhoto' name='photo' />
+    </div>
+    <div class="form-group col-11 col-12-xsmall"></div>
+    <div class='form-group col-1 col-12-xsmall'>
+      <button type='submit'>
+        register
+      </button>
+    </div>
+  </div>
+</form>

@@ -37,6 +37,8 @@ describe('Rendering handlers tests', () => {
     expect(res.render).toHaveBeenCalledWith('section-test')
   })
 
+  // TODO: vacation-photo contest page test
+
   test('404 handler renders', () => {
     const req = mock<Request>()
     const res = mock<Response>()

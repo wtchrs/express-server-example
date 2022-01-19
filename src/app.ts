@@ -45,6 +45,24 @@ app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
 
 app.get('/newsletter', handlers.newsletter)
 
+app.get('/contest/vacation-photo', handlers.vacationPhotoContest)
+app.post(
+  '/contest/vacation-photo/:year/:month',
+  handlers.vacationPhotoContestProcess,
+)
+app.get(
+  '/contest/vacation-photo-thank-you',
+  handlers.vacationPhotoContestThankYou,
+)
+
+app.get('/contest/vacation-photo-ajax', handlers.vacationPhotoContestAjax)
+app.post(
+  '/api/contest/vacation-photo-ajax/:year/:month',
+  api.vacationPhotoContest,
+)
+
+// TODO: vacation-photo ajax version page
+
 // API
 app.get('/api/headers', api.showHeaders)
 app.post('/api/newsletter-signup', api.newsletterSignup)
