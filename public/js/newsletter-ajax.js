@@ -5,7 +5,7 @@ form.addEventListener('submit', evt => {
 
   const form = evt.target
   const body = JSON.stringify({
-    csrf: form.elements.csrf.value,
+    _csrf: form.elements._csrf.value,
     name: form.elements.name.value,
     email: form.elements.email.value,
   })

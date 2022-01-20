@@ -24,10 +24,10 @@ export default class Handlers {
   }
 
   static newsletterSignupProcess(req: Request, res: Response) {
-    console.log('Form (from querystring): ' + req.query.form)
-    console.log('CSRF token (from hidden form field): ' + req.body.csrf)
-    console.log('Name (from visible form field): ' + req.body.name)
-    console.log('Email (from visible form field): ' + req.body.email)
+    console.log(`Form (from querystring): ${req.query.form}`)
+    console.log(`CSRF token (from hidden form field): ${req.body._csrf}`)
+    console.log(`Name (from visible form field): ${req.body.name}`)
+    console.log(`Email (from visible form field): ${req.body.email}\n`)
 
     res.redirect(303, '/newsletter-signup/thank-you')
   }
@@ -77,9 +77,9 @@ export default class Handlers {
     files: unknown,
   ) {
     console.log('field data: ', fields)
-    console.log('files: ', files)
+    console.log('files: ', files, '\n')
 
-    res.redirect(303, '/contest/vacation-photo-thank-you')
+    res.redirect(303, '/contest/vacation-photo/thank-you')
   }
 
   static vacationPhotoContestThankYou(_req: Request, res: Response) {
@@ -125,9 +125,9 @@ export class ApiHandlers {
   }
 
   static newsletterSignup(req: Request, res: Response) {
-    console.log('CSRF token (from hidden form field): ' + req.body.csrf)
-    console.log('Name (from visible form field): ' + req.body.name)
-    console.log('Email (from visible form field): ' + req.body.email)
+    console.log(`CSRF token (from hidden form field): ${req.body._csrf}`)
+    console.log(`Name (from visible form field): ${req.body.name}`)
+    console.log(`Email (from visible form field): ${req.body.email}\n`)
 
     res.send({ result: 'success' })
   }
@@ -156,7 +156,8 @@ export class ApiHandlers {
     files: unknown,
   ) {
     console.log('field data: ', fields)
-    console.log('files: ', files)
+    console.log('files: ', files, '\n')
+
     res.send({ result: 'success' })
   }
 }

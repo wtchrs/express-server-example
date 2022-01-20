@@ -51,21 +51,19 @@ app.post(
   handlers.vacationPhotoContestProcess,
 )
 app.get(
-  '/contest/vacation-photo-thank-you',
+  '/contest/vacation-photo/thank-you',
   handlers.vacationPhotoContestThankYou,
 )
 
 app.get('/contest/vacation-photo-ajax', handlers.vacationPhotoContestAjax)
-app.post(
-  '/api/contest/vacation-photo-ajax/:year/:month',
-  api.vacationPhotoContest,
-)
-
-// TODO: vacation-photo ajax version page
 
 // API
 app.get('/api/headers', api.showHeaders)
 app.post('/api/newsletter-signup', api.newsletterSignup)
+app.post(
+  '/api/contest/vacation-photo-ajax/:year/:month',
+  api.vacationPhotoContest,
+)
 
 // custom 404, 500 handling pages
 app.use(handlers.notFound)

@@ -4,10 +4,15 @@ import type { Request, Response } from 'express'
 import { default as handlers, ApiHandlers as api } from '../src/lib/handlers'
 
 describe('Rendering handlers tests', () => {
-  test('home page renders', () => {
-    const req = mock<Request>()
-    const res = mock<Response>()
+  let req: Request
+  let res: Response
 
+  beforeEach(() => {
+    req = mock<Request>()
+    res = mock<Response>()
+  })
+
+  test('home page renders', () => {
     handlers.home(req, res)
 
     expect(res.render).toHaveBeenCalledTimes(1)
@@ -15,9 +20,6 @@ describe('Rendering handlers tests', () => {
   })
 
   test('about page renders with fortune', () => {
-    const req = mock<Request>()
-    const res = mock<Response>()
-
     handlers.about(req, res)
 
     expect(res.render).toHaveBeenCalledTimes(1)
@@ -27,22 +29,91 @@ describe('Rendering handlers tests', () => {
     )
   })
 
-  test('section-test handler renders', () => {
-    const req = mock<Request>()
-    const res = mock<Response>()
-
+  test('section-test renders', () => {
     handlers.sectionTest(req, res)
 
     expect(res.render).toHaveBeenCalledTimes(1)
     expect(res.render).toHaveBeenCalledWith('section-test')
   })
 
-  // TODO: vacation-photo contest page test
+  test('newsletter sign up page renders', () => {
+    handlers.newsletterSignup(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith(
+      'newsletter-signup',
+      expect.objectContaining({ csrf: expect.stringMatching(/\W/) }),
+    )
+  })
+
+  test('newsletter sign up process redirects', () => {
+    handlers.newsletterSignupProcess(req, res)
+
+    expect(res.redirect).toHaveBeenCalledTimes(1)
+    expect(res.redirect).toHaveBeenCalledWith(
+      303,
+      '/newsletter-signup/thank-you',
+    )
+  })
+
+  test('newsletter sign up thank-you page renders', () => {
+    handlers.newsletterSignupThankYou(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith('newsletter-signup-thank-you')
+  })
+
+  test('newsletter sign up with ajax renders', () => {
+    handlers.newsletter(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith(
+      'newsletter',
+      expect.objectContaining({ csrf: expect.stringMatching(/\W/) }),
+    )
+  })
+
+  test('vacation-photo participating page renders', () => {
+    handlers.vacationPhotoContest(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith(
+      'contest/vacation-photo',
+      expect.objectContaining({ csrf: expect.stringMatching(/\W/) }),
+    )
+  })
+
+  test('vacation-photo process redirects', () => {
+    const fields = mock<unknown>()
+    const files = mock<unknown>()
+
+    handlers.vacationPhotoContestProcessHandler(req, res, fields, files)
+
+    expect(res.redirect).toHaveBeenCalledTimes(1)
+    expect(res.redirect).toHaveBeenCalledWith(
+      303,
+      '/contest/vacation-photo/thank-you',
+    )
+  })
+
+  test('vacation-photo-thank-you page renders', () => {
+    handlers.vacationPhotoContestThankYou(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith('contest/vacation-photo-thank-you')
+  })
+
+  test('vacation-photo participating page with ajax renders', () => {
+    handlers.vacationPhotoContestAjax(req, res)
+
+    expect(res.render).toHaveBeenCalledTimes(1)
+    expect(res.render).toHaveBeenCalledWith(
+      'contest/vacation-photo-ajax',
+      expect.objectContaining({ csrf: expect.stringMatching(/\W/) }),
+    )
+  })
 
   test('404 handler renders', () => {
-    const req = mock<Request>()
-    const res = mock<Response>()
-
     handlers.notFound(req, res)
 
     expect(res.render).toHaveBeenCalledTimes(1)
@@ -51,8 +122,6 @@ describe('Rendering handlers tests', () => {
 
   test('500 handler renders', () => {
     const err = mock<Error>()
-    const req = mock<Request>()
-    const res = mock<Response>()
     const next = jest.fn()
 
     handlers.serverError(err, req, res, next)
@@ -64,10 +133,15 @@ describe('Rendering handlers tests', () => {
 })
 
 describe('API handlers tests', () => {
-  test('/api/headers handler test', () => {
-    const req = mock<Request>()
-    const res = mock<Response>()
+  let req: Request
+  let res: Response
 
+  beforeEach(() => {
+    req = mock<Request>()
+    res = mock<Response>()
+  })
+
+  test('/api/headers handler test', () => {
     // dummy headers
     req.headers = {
       host: '127.0.0.1:3000',
@@ -82,6 +156,29 @@ describe('API handlers tests', () => {
     expect(res.send).toHaveBeenCalledTimes(1)
     expect(res.send).toHaveBeenCalledWith(
       expect.stringMatching(/^([^\n]+: [^\n]+\n)+([^\n]+: [^\n]+)$/),
+    )
+  })
+
+  test('newsletter signup ajax test', () => {
+    req.body = { _csrf: 'CSRF token', name: 'Hello', email: 'hello@hello.com' }
+
+    api.newsletterSignup(req, res)
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send).toHaveBeenCalledWith(
+      expect.objectContaining({ result: 'success' }),
+    )
+  })
+
+  test('vacation-photo ajax handler test', () => {
+    const fields = mock<unknown>()
+    const files = mock<unknown>()
+
+    api.vacationPhotoContestHandler(req, res, fields, files)
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send).toHaveBeenCalledWith(
+      expect.objectContaining({ result: 'success' }),
     )
   })
 })
