@@ -25,5 +25,8 @@ build/
 # Optional eslint cache
 .eslintcache
 
+# Credential data
+src/credentials/*
+
 # Misc
 .DS_Store

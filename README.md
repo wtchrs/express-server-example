@@ -24,7 +24,7 @@ npm run build && npm run start
 
 This repo is Licensed under the APLv2. See the [LICENSE][license] file for details.
 
-And I use the HTML template [Stellar][stellar] by [HTML5 UP][html5up]([views/layouts/stellar.hbs][stellar-hbs], [public/stellar][stellar-public]), which is Licensed under the CCA 3.0 license([more][stellar-license]).
+And I use the HTML template [Stellar][stellar] by [HTML5 UP][html5up]([views/layouts/stellar.hbs][stellar-hbs], [public/stellar/*][stellar-public]), which is Licensed under the CCA 3.0 license([more][stellar-license]).
 
 [original-repo]: https://github.com/EthanRBrown/web-development-with-node-and-express-2e
 [template]: https://github.com/wtchrs/node-ts-boilerplate
