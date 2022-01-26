@@ -46,21 +46,29 @@ describe('Rendering handlers tests', () => {
     )
   })
 
-  test('newsletter sign up process redirects', () => {
-    handlers.newsletterSignupProcess(req, res)
+  test('newsletter sign up process with invalid email redirects to /newsletter', async () => {
+    req.body = { name: 'test_name', email: 'this_is_invalid_email' }
+
+    await handlers.newsletterSignupProcess(req, res)
 
     expect(res.redirect).toHaveBeenCalledTimes(1)
-    expect(res.redirect).toHaveBeenCalledWith(
-      303,
-      '/newsletter-signup/thank-you',
-    )
+    expect(res.redirect).toHaveBeenCalledWith(303, '/newsletter')
   })
 
-  test('newsletter sign up thank-you page renders', () => {
-    handlers.newsletterSignupThankYou(req, res)
+  test('newsletter sign up process with valid email redirects to /newsletter/archive', async () => {
+    req.body = { name: 'hello', email: 'hello@hello.com' }
+
+    await handlers.newsletterSignupProcess(req, res)
+
+    expect(res.redirect).toHaveBeenCalledTimes(1)
+    expect(res.redirect).toHaveBeenCalledWith(303, '/newsletter/archive')
+  })
+
+  test('newsletter archive page renders', () => {
+    handlers.newsletterArchive(req, res)
 
     expect(res.render).toHaveBeenCalledTimes(1)
-    expect(res.render).toHaveBeenCalledWith('newsletter-signup-thank-you')
+    expect(res.render).toHaveBeenCalledWith('newsletter-archive')
   })
 
   test('newsletter sign up with ajax renders', () => {

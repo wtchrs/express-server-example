@@ -78,7 +78,7 @@ export default class Handlers {
     res.render('newsletter-signup', { csrf: 'CSRF token goes here' })
   }
 
-  static newsletterSignupProcess(req: Request, res: Response) {
+  static async newsletterSignupProcess(req: Request, res: Response) {
     const name = req.body.name || ''
     const email = req.body.email || ''
 
@@ -93,7 +93,7 @@ export default class Handlers {
       return
     }
 
-    new NewsletterSignup(name, email)
+    await new NewsletterSignup(name, email)
       .save()
       .then(() => {
         req.session.flash = {
