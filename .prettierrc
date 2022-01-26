@@ -7,9 +7,15 @@
   "useTabs": false,
   "arrowParens": "avoid",
   "endOfLine": "lf",
-  "embeddedLanguageFormatting": "off",
-  "htmlWhitespaceSensitivity": "ignore",
+  "embeddedLanguageFormatting": "auto",
+  "htmlWhitespaceSensitivity": "css",
   "overrides": [
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "options": {
+        "tabWidth": 4
+      }
+    },
     {
       "files": "*.ts",
       "options": {

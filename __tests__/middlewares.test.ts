@@ -4,14 +4,14 @@ import type { Request, Response } from 'express'
 import weatherMiddleware from '../src/lib/middleware/weather'
 
 describe('Middleware tests', () => {
-  test('Weather middleware', async () => {
-    const req = mock<Request>()
-    const res = mock<Response>()
-    const next = jest.fn()
+    test('Weather middleware', async () => {
+        const req = mock<Request>()
+        const res = mock<Response>()
+        const next = jest.fn()
 
-    await weatherMiddleware(req, res, next)
+        await weatherMiddleware(req, res, next)
 
-    expect(res.locals).toHaveProperty('partials.weatherContext')
-    expect(next).toHaveBeenCalledTimes(1)
-  })
+        expect(res.locals).toHaveProperty('partials.weatherContext')
+        expect(next).toHaveBeenCalledTimes(1)
+    })
 })

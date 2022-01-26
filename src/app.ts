@@ -17,18 +17,18 @@ const app = express()
 app.disable('x-powered-by')
 
 const hbs = create({
-  extname: '.hbs',
-  defaultLayout: 'stellar',
-  helpers: {
-    section(name: string, options: { fn: (arg: unknown) => string }) {
-      if (!this.sections) this.sections = {}
+    extname: '.hbs',
+    defaultLayout: 'stellar',
+    helpers: {
+        section(name: string, options: { fn: (arg: unknown) => string }) {
+            if (!this.sections) this.sections = {}
 
-      const sections = this.sections as { [key: string]: unknown }
+            const sections = this.sections as { [key: string]: unknown }
 
-      sections[name] = options.fn(this)
-      return null
+            sections[name] = options.fn(this)
+            return null
+        },
     },
-  },
 })
 
 app.engine('.hbs', hbs.engine)
@@ -40,11 +40,11 @@ app.use(express.static(root_dir + '/public'))
 
 app.use(cookieParser(credentials.cookieSecret))
 app.use(
-  expressSession({
-    resave: false,
-    saveUninitialized: false,
-    secret: credentials.cookieSecret,
-  }),
+    expressSession({
+        resave: false,
+        saveUninitialized: false,
+        secret: credentials.cookieSecret,
+    }),
 )
 
 app.use(weatherMiddleware)
@@ -66,12 +66,12 @@ app.get('/newsletter', handlers.newsletter)
 
 app.get('/contest/vacation-photo', handlers.vacationPhotoContest)
 app.post(
-  '/contest/vacation-photo/:year/:month',
-  handlers.vacationPhotoContestProcess,
+    '/contest/vacation-photo/:year/:month',
+    handlers.vacationPhotoContestProcess,
 )
 app.get(
-  '/contest/vacation-photo/thank-you',
-  handlers.vacationPhotoContestThankYou,
+    '/contest/vacation-photo/thank-you',
+    handlers.vacationPhotoContestThankYou,
 )
 
 app.get('/contest/vacation-photo-ajax', handlers.vacationPhotoContestAjax)
@@ -83,8 +83,8 @@ app.post('/cart/add-to-cart', handlers.cartProcess)
 app.get('/api/headers', api.showHeaders)
 app.post('/api/newsletter-signup', api.newsletterSignup)
 app.post(
-  '/api/contest/vacation-photo-ajax/:year/:month',
-  api.vacationPhotoContest,
+    '/api/contest/vacation-photo-ajax/:year/:month',
+    api.vacationPhotoContest,
 )
 
 // custom 404, 500 handling pages

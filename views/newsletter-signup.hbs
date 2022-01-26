@@ -1,18 +1,29 @@
 {{#section 'title'}}Sign up for our newsletter to receive news and specials!{{/section}}
 
-<form action="/newsletter-signup/process" role="form" method="POST">
-  <div class="row gtr-uniform">
-  <input type="hidden" name="_csrf" value="{{csrf}}">
-  <div class="form-group col-6 col-12-xsmall">
-    <input type="text" class="form-control"
-      id="fieldName" name="name" placeholder="Name">
-  </div>
-  <div class="form-group col-6 col-12-xsmall">
-    <input type="email" class="form-control"
-      id="fieldEmail" name="email" placeholder="Email" required>
-  </div>
-  <div>
-    <button type="submit">Register</button>
-  </div>
+<form action='/newsletter-signup/process' role='form' method='POST'>
+  <div class='row gtr-uniform'>
+    <input type='hidden' name='_csrf' value='{{csrf}}' />
+    <div class='form-group col-6 col-12-xsmall'>
+      <input
+        type='text'
+        class='form-control'
+        id='fieldName'
+        name='name'
+        placeholder='Name'
+      />
+    </div>
+    <div class='form-group col-6 col-12-xsmall'>
+      <input
+        type='email'
+        class='form-control'
+        id='fieldEmail'
+        name='email'
+        placeholder='Email'
+        required
+      />
+    </div>
+    <div>
+      <button type='submit'>Register</button>
+    </div>
   </div>
 </form>
