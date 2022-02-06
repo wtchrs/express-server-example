@@ -53,12 +53,12 @@ export default function application(profile?: Profile): Express {
     app.use(express.json())
     app.use(express.static(root_dir + '/public'))
 
-    app.use(cookieParser(process.env.cookieSecret))
+    app.use(cookieParser(process.env.COOKIE_SECRET))
     app.use(
         expressSession({
             resave: false,
             saveUninitialized: false,
-            secret: process.env.cookieSecret || '',
+            secret: process.env.COOKIE_SECRET || '',
         }),
     )
 

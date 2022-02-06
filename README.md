@@ -17,6 +17,18 @@ To run this server, use the following commands:
 git clone https://github.com/wtchrs/express-server-example.git
 cd express-server-example
 npm install
+```
+
+Before run the server, you should create "./env/development.env" file.
+
+```dotenv
+COOKIE_SECRET=...YourCookieSecretString
+SENDGRID_API_KEY=...YourSendgridApiKeyString
+```
+
+After create an env file, run the following command:
+
+```sh
 npm run build && npm run start
 ```
 
