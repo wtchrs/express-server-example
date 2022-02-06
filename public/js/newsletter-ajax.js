@@ -19,6 +19,12 @@ form.addEventListener('submit', evt => {
             return res.json()
         })
         .then(json => {
+            if (json.result !== 'success') {
+                container.innerHTML =
+                    "<p>We're sorry, we had a problem signing you up.</p>" +
+                    `<p>message : <strong>${json.message}</strong></p>`
+                return
+            }
             container.innerHTML =
                 '<b>Thank you for signing up!</b><p><a href="/">Home</a></p>'
         })

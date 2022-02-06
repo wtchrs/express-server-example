@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import type { Request, Response } from 'express'
 
-import { default as handlers, ApiHandlers as api } from '../src/lib/handlers'
+import * as handlers from '../src/lib/handlers'
 
 describe('Rendering handlers tests', () => {
     let req: Request
@@ -159,7 +159,7 @@ describe('API handlers tests', () => {
             etc: '...',
         }
 
-        api.showHeaders(req, res)
+        handlers.api.showHeaders(req, res)
 
         expect(res.type).toHaveBeenCalledTimes(1)
         expect(res.type).toHaveBeenCalledWith('text/plain')
@@ -169,14 +169,14 @@ describe('API handlers tests', () => {
         )
     })
 
-    test('newsletter signup ajax test', () => {
+    test('newsletter signup ajax test', async () => {
         req.body = {
             _csrf: 'CSRF token',
             name: 'Hello',
             email: 'hello@hello.com',
         }
 
-        api.newsletterSignup(req, res)
+        await handlers.api.newsletterSignup(req, res)
 
         expect(res.send).toHaveBeenCalledTimes(1)
         expect(res.send).toHaveBeenCalledWith(
@@ -188,7 +188,7 @@ describe('API handlers tests', () => {
         const fields = mock<unknown>()
         const files = mock<unknown>()
 
-        api.vacationPhotoContestHandler(req, res, fields, files)
+        handlers.api.vacationPhotoContestHandler(req, res, fields, files)
 
         expect(res.send).toHaveBeenCalledTimes(1)
         expect(res.send).toHaveBeenCalledWith(

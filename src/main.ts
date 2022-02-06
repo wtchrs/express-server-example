@@ -1,4 +1,6 @@
-import { default as app, port } from './app'
+import { default as application, port } from './app'
+
+const app = application()
 
 app.listen(port, '0.0.0.0', () =>
     console.log(

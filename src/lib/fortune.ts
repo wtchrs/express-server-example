@@ -1,3 +1,4 @@
+/** @type {string[]} */
 const fortuneCookies = [
     'Conquer your fears of they will conquer you.',
     'Rivers need springs.',
@@ -6,6 +7,10 @@ const fortuneCookies = [
     'Whenever possible, keep it simple.',
 ]
 
+/**
+ * Return a random fortune cookie message.
+ * @return {string}
+ */
 export function getFortune(): string {
     const idx = Math.floor(Math.random() * fortuneCookies.length)
     return fortuneCookies[idx]

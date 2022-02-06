@@ -1,12 +1,13 @@
 import portfinder from 'portfinder'
 import puppeteer from 'puppeteer'
 import type { Browser, Page } from 'puppeteer'
-
 import type { Server } from 'http'
 
-import app from '../../src/app'
+import { default as application } from '../../src/app'
 
 describe('Navigation test', () => {
+    const app = application('test')
+
     let server: Server | null = null
     let port: number | null = null
 

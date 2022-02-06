@@ -26,58 +26,87 @@ export interface Product {
 }
 
 /**
- * Middlewares for check validation of a cart.
+ * Middleware to reset cart validation in request session.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
  */
-export default class CartValidation {
-    static resetValidation(req: Request, res: Response, next: NextFunction) {
-        const { cart } = req.session
+export function resetValidation(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
+    const { cart } = req.session
 
-        if (cart) {
-            cart.warnings = []
-            cart.errors = []
-        }
-
-        next()
+    if (cart) {
+        cart.warnings = []
+        cart.errors = []
     }
 
-    static checkWaivers(req: Request, res: Response, next: NextFunction) {
-        const { cart } = req.session
+    next()
+}
 
-        if (!cart) {
-            next()
-            return
-        }
+/**
+ * Middleware to check requirements of waivers in cart.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+export function checkWaivers(req: Request, res: Response, next: NextFunction) {
+    const { cart } = req.session
 
-        cart.warnings = cart.warnings || []
-
-        if (cart.items.some(item => item.product.requiresWaiver)) {
-            cart.warnings.push(
-                'One or more of your selected tours requires a waiver.',
-            )
-        }
-
+    if (cart === undefined) {
         next()
+        return
     }
 
-    static checkGuestCounts(req: Request, res: Response, next: NextFunction) {
-        const { cart } = req.session
-        if (!cart) {
-            next()
-            return
-        }
-
-        cart.errors = cart.errors || []
-
-        const check = (item: Item) =>
-            item.guests > (item.product.maxGuests || Number.MAX_VALUE)
-
-        if (cart.items.some(check)) {
-            cart.errors.push(
-                'One or more of your selected tours cannot accommodate the number of' +
-                    ' guests you have selected.',
-            )
-        }
-
-        next()
+    if (cart.warnings === undefined) {
+        cart.warnings = []
     }
+
+    if (cart.items.some(item => item.product.requiresWaiver)) {
+        cart.warnings.push(
+            'One or more of your selected tours requires a waiver.',
+        )
+    }
+
+    next()
+}
+
+/**
+ * Middleware to check if the number of guests exceeds maxGuests.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+export function checkGuestCounts(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
+    const { cart } = req.session
+
+    if (cart === undefined) {
+        next()
+        return
+    }
+
+    if (cart.errors === undefined) {
+        cart.errors = []
+    }
+
+    const check = (item: Item) =>
+        item.guests > (item.product.maxGuests || Number.MAX_VALUE)
+
+    if (cart.items.some(check)) {
+        cart.errors.push(
+            'One or more of your selected tours cannot accommodate the number of' +
+                ' guests you have selected.',
+        )
+    }
+
+    next()
 }

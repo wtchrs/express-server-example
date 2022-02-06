@@ -10,6 +10,7 @@ export interface IWeather {
 
 /**
  * Dummy weather data
+ * @type {IWeather[]}
  */
 const weatherData: IWeather[] = [
     {
@@ -49,6 +50,13 @@ async function getWeatherData(): Promise<IWeather[]> {
     return weatherData
 }
 
+/**
+ * Middleware for weather.
+ *
+ * @param {Request} _req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
 export default async function weatherMiddleware(
     _req: Request,
     res: Response,
