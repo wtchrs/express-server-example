@@ -19,11 +19,13 @@ cd express-server-example
 npm install
 ```
 
-Before run the server, you should create "./env/development.env" file.
+Before run the server, you should create "env/.env.development" file.
 
 ```dotenv
 COOKIE_SECRET=...YourCookieSecretString
 SENDGRID_API_KEY=...YourSendgridApiKeyString
+SENDER_NAME=...YourName
+SENDER_EMAIL=...YourEmail
 ```
 
 After create an env file, run the following command:

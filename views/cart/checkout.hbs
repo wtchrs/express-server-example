@@ -1,0 +1,47 @@
+<p>Your cart :</p>
+<table class='table'>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th class='text-right'>Price</th>
+    <th class='text-right'>Guests</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each cart.items}}
+    <tr>
+      <td>{{product.name}}</td>
+      <td class='text-right'>{{product.price}}</td>
+      <td class='text-right'>{{guests}}</td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+
+<form action='/cart/checkout/process' role='form' method='POST'>
+  <div class='row gtr-uniform'>
+    <input type='hidden' name='_csrf' value='{{csrf}}' />
+    <div class='form-group col-6 col-12-xsmall'>
+      <input
+        type='text'
+        class='form-control'
+        id='fieldName'
+        name='name'
+        placeholder='Name'
+      />
+    </div>
+    <div class='form-group col-6 col-12-xsmall'>
+      <input
+        type='email'
+        class='form-control'
+        id='fieldEmail'
+        name='email'
+        placeholder='Email'
+        required
+      />
+    </div>
+    <div>
+      <button type='submit'>Check out</button>
+    </div>
+  </div>
+</form>

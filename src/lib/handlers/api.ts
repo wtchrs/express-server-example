@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import multiparty from 'multiparty'
 
-import { NewsletterSignup } from './newsletter'
+import { EmailProcess } from '../emailService'
 
 /**
  * @param {Request} req
@@ -22,10 +22,7 @@ export function showHeaders(req: Request, res: Response) {
  * @param {Response} res
  */
 export async function newsletterSignup(req: Request, res: Response) {
-    const signup = NewsletterSignup.makeNewsletterSignup(
-        req.body.name,
-        req.body.email,
-    )
+    const signup = EmailProcess.makeEmailProcess(req.body.name, req.body.email)
 
     if (signup === undefined) {
         res.send({ result: 'error', message: 'Incorrect email format' })
@@ -33,7 +30,7 @@ export async function newsletterSignup(req: Request, res: Response) {
     }
 
     await signup
-        .save()
+        .process()
         .then(() => {
             res.send({ result: 'success' })
         })

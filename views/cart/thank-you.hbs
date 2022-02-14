@@ -1,0 +1,23 @@
+<p>Thank you for booking your trip with Meadowlark Travel!</p>
+
+<p>Your checkout :</p>
+<table class='table'>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th class='text-right'>Price</th>
+    <th class='text-right'>Guests</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each cart.items}}
+    <tr>
+      <td>{{product.name}}</td>
+      <td class='text-right'>{{product.price}}</td>
+      <td class='text-right'>{{guests}}</td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+
+<a href="/">Home</a>

@@ -9,14 +9,16 @@ import * as handlers from './lib/handlers'
 import weatherMiddleware from './lib/middleware/weather'
 import flashMiddleware from './lib/middleware/flash'
 import * as cartValidation from './lib/middleware/cartValidation'
+import { EmailService } from './lib/emailService'
 
+/** Application execution profile */
 type Profile = 'development' | 'test' | 'production'
 
 export const port = Number(process.env.PORT) || 3000
 export const root_dir = './'
 
 /**
- * Create a server application of express.
+ * Create a server application using express.
  *
  * @param {Profile} profile
  * @return {Express}
@@ -26,7 +28,8 @@ export default function application(profile?: Profile): Express {
         profile = 'development'
     }
 
-    dotenv.config({ path: root_dir + `/env/${profile}.env` })
+    dotenv.config({ path: root_dir + `/env/.env.${profile}` })
+    EmailService.setApiKey(process.env.SENDGRID_API_KEY as string)
 
     const app = express()
     app.disable('x-powered-by')
@@ -93,6 +96,8 @@ export default function application(profile?: Profile): Express {
 
     app.get('/cart', handlers.cart)
     app.post('/cart/add-to-cart', handlers.cartProcess)
+    app.get('/cart/checkout', handlers.cartCheckout)
+    app.post('/cart/checkout/process', handlers.cartCheckoutProcess)
 
     // API
     app.get('/api/headers', handlers.api.showHeaders)

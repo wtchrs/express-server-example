@@ -1,29 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-
-declare module 'express-session' {
-    interface SessionData {
-        cart?: Cart
-    }
-}
-
-export interface Cart {
-    warnings?: string[]
-    errors?: string[]
-    items: Item[]
-}
-
-export interface Item {
-    product: Product
-    guests: number
-}
-
-export interface Product {
-    id: string
-    name: string
-    price: number
-    requiresWaiver?: boolean
-    maxGuests?: number
-}
+import type { IItem } from '../types'
 
 /**
  * Middleware to reset cart validation in request session.
@@ -98,7 +74,7 @@ export function checkGuestCounts(
         cart.errors = []
     }
 
-    const check = (item: Item) =>
+    const check = (item: IItem) =>
         item.guests > (item.product.maxGuests || Number.MAX_VALUE)
 
     if (cart.items.some(check)) {

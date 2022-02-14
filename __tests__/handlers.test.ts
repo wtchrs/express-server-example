@@ -41,7 +41,7 @@ describe('Rendering handlers tests', () => {
 
         expect(res.render).toHaveBeenCalledTimes(1)
         expect(res.render).toHaveBeenCalledWith(
-            'newsletter-signup',
+            'newsletter/signup',
             expect.objectContaining({ csrf: expect.stringMatching(/\W/) }),
         )
     })
@@ -68,7 +68,7 @@ describe('Rendering handlers tests', () => {
         handlers.newsletterArchive(req, res)
 
         expect(res.render).toHaveBeenCalledTimes(1)
-        expect(res.render).toHaveBeenCalledWith('newsletter-archive')
+        expect(res.render).toHaveBeenCalledWith('newsletter/archive')
     })
 
     test('newsletter sign up with ajax renders', () => {
@@ -76,7 +76,7 @@ describe('Rendering handlers tests', () => {
 
         expect(res.render).toHaveBeenCalledTimes(1)
         expect(res.render).toHaveBeenCalledWith(
-            'newsletter',
+            'newsletter/newsletter',
             expect.objectContaining({ csrf: expect.stringMatching(/\W/) }),
         )
     })

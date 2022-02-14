@@ -1,11 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
 
-declare module 'express-session' {
-    interface SessionData {
-        flash?: { type: string; intro: string; message: string }
-    }
-}
-
 /**
  * Middleware for flash message.
  *
