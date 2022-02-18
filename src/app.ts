@@ -9,7 +9,7 @@ import * as handlers from './lib/handlers'
 import weatherMiddleware from './lib/middleware/weather'
 import flashMiddleware from './lib/middleware/flash'
 import * as cartValidation from './lib/middleware/cartValidation'
-import { EmailService } from './lib/emailService'
+import { EmailData, EmailService } from './lib/emailService'
 
 /** Application execution profile */
 type Profile = 'development' | 'test' | 'production'
@@ -29,6 +29,17 @@ export default function application(profile?: Profile): Express {
     }
 
     dotenv.config({ path: root_dir + `/env/.env.${profile}` })
+
+    const sender = EmailData.makeEmailData(
+        process.env.SENDER_NAME as string,
+        process.env.SENDER_EMAIL as string,
+    )
+
+    if (sender === undefined) {
+        throw new Error('Email sender data is invalid.')
+    }
+
+    EmailService.setSender(sender)
     EmailService.setApiKey(process.env.SENDGRID_API_KEY as string)
 
     const app = express()

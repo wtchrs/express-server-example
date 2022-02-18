@@ -96,7 +96,14 @@ export class EmailProcess {
 }
 
 export class EmailService {
-    private readonly sender: string | EmailData
+    private static sender: string | EmailData
+
+    /**
+     * Not allowed to create a new instance.
+     * @private
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
 
     /**
      * Set API key.
@@ -107,10 +114,18 @@ export class EmailService {
     }
 
     /**
-     * @param {string|EmailData} sender - can be an email only string or an EmailData instance.
+     * Set an email sender data.
+     * @param {string|EmailData} sender - It can be an email only string or an EmailData instance.
      */
-    constructor(sender: string | EmailData) {
-        this.sender = sender
+    static setSender(sender: string | EmailData) {
+        if (sender instanceof EmailData) {
+            this.sender = sender
+        } else {
+            if (EmailData.makeEmailData('', sender) === undefined)
+                throw new Error('Email validation error.')
+
+            this.sender = sender
+        }
     }
 
     /**
@@ -120,7 +135,7 @@ export class EmailService {
      * @param {string} subject
      * @param {string} html
      */
-    async send(to: string, subject: string, html: string) {
+    static async send(to: string, subject: string, html: string) {
         await sgMail
             .send({
                 to,

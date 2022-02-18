@@ -148,24 +148,11 @@ function checkoutEmailProcess(req: Request, res: Response, cart: ICart) {
             return
         }
 
-        const sender = EmailData.makeEmailData(
-            process.env.SENDER_NAME as string,
-            process.env.SENDER_EMAIL as string,
+        EmailService.send(
+            (cart.billing as IEmail).email,
+            'Thank you for book your trip with Meadowlark Travel',
+            html,
         )
-
-        if (sender === undefined) {
-            console.error('Email data of email sender is invalid.')
-            return
-        }
-
-        const emailService = new EmailService(sender)
-
-        emailService
-            .send(
-                (cart.billing as IEmail).email,
-                'Thank you for book your trip with Meadowlark Travel',
-                html,
-            )
             .then(() => {
                 res.render('cart/thank-you', { cart: cart })
                 delete req.session.cart
